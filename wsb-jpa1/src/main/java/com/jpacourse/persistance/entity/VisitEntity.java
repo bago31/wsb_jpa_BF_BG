@@ -1,6 +1,7 @@
 package com.jpacourse.persistance.entity;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 import jakarta.persistence.*;
 
@@ -16,6 +17,15 @@ public class VisitEntity {
 
 	@Column(nullable = false)
 	private LocalDateTime time;
+
+	@ManyToOne(optional = false)
+	private DoctorEntity doctor;
+
+	@ManyToOne(optional = false)
+	private PatientEntity patient;
+
+	@OneToMany(mappedBy = "visit", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	private Collection<MedicalTreatmentEntity> medicalTreatments;
 
 	public Long getId() {
 		return id;
@@ -39,6 +49,30 @@ public class VisitEntity {
 
 	public void setTime(LocalDateTime time) {
 		this.time = time;
+	}
+
+	public DoctorEntity getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(DoctorEntity doctor) {
+		this.doctor = doctor;
+	}
+
+	public PatientEntity getPatient() {
+		return patient;
+	}
+
+	public void setPatient(PatientEntity patient) {
+		this.patient = patient;
+	}
+
+	public Collection<MedicalTreatmentEntity> getMedicalTreatments() {
+		return medicalTreatments;
+	}
+
+	public void setMedicalTreatments(Collection<MedicalTreatmentEntity> medicalTreatments) {
+		this.medicalTreatments = medicalTreatments;
 	}
 
 }
