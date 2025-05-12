@@ -17,13 +17,13 @@ insert into address (id, address_line1, address_line2, city, postal_code)
                 ('Emily', 'Brown', '222333444', 'emily.brown@example.com', 'DOC101', 'SURGEON', 4),
                 ('David', 'Wilson', '999111222', 'david.wilson@example.com', 'DOC112', 'SURGEON', 5);
 
-INSERT INTO patient (first_Name, last_Name, telephone_Number, email, patient_Number, date_Of_Birth, address_id)
+INSERT INTO patient (first_Name, last_Name, telephone_Number, email, patient_Number, date_Of_Birth, address_id,is_smoker)
 VALUES
-    ('Alice', 'Johnson', '111222333', 'alice.johnson@example.com', 'PAT001', '1990-05-15', 1),
-    ('Bob', 'Smith', '444555666', 'bob.smith@example.com', 'PAT002', '1985-10-20', 2),
-    ('Carol', 'Williams', '777888999', 'carol.williams@example.com', 'PAT003', '1988-03-25', 3),
-    ('David', 'Brown', '123456789', 'david.brown@example.com', 'PAT004', '1995-08-12', 4),
-    ('Emma', 'Jones', '987654321', 'emma.jones@example.com', 'PAT005', '1992-12-30', 5);
+    ('Alice', 'Johnson', '111222333', 'alice.johnson@example.com', 'PAT001', '1990-05-15', 1, true),
+    ('Bob', 'Smith', '444555666', 'bob.smith@example.com', 'PAT002', '1985-10-20', 2, false),
+    ('Carol', 'Williams', '777888999', 'carol.williams@example.com', 'PAT003', '1988-03-25', 3, false),
+    ('David', 'Brown', '123456789', 'david.brown@example.com', 'PAT004', '1995-08-12', 4, true),
+    ('Emma', 'Jones', '987654321', 'emma.jones@example.com', 'PAT005', '1992-12-30', 5, true);
 
 
 INSERT INTO visit (description, time, doctor_id, patient_id)

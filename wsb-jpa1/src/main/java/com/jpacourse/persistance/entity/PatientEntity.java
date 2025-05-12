@@ -30,6 +30,9 @@ public class PatientEntity {
 	@Column(nullable = false)
 	private LocalDate dateOfBirth;
 
+	@Column(nullable = false)
+	private boolean isSmoker;
+
 	@OneToOne
 	private AddressEntity address;
 
@@ -91,6 +94,10 @@ public class PatientEntity {
 	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
+
+	public boolean getIsSmoker() {return isSmoker; }
+
+	public void setIsSmoker(boolean isSmoker) {this.isSmoker = isSmoker; };
 
 	public AddressEntity getAddress() {
 		return address;
