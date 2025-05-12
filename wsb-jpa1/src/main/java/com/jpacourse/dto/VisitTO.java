@@ -1,20 +1,15 @@
 package com.jpacourse.dto;
 
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 public class VisitTO {
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String telephoneNumber;
-    private String email;
-    private String patientNumber;
-    private LocalDate dateOfBirth;
-    private boolean isSmoker;
-    private AddressTO address;
-    private Collection<VisitTO> visits;
+    private String description;
+    private LocalDateTime time;
+    private DoctorTO doctor;
+    private PatientTO patient;
+    private Collection<MedicalTreatmentTO> medicalTreatments;
     public Long getId() {
         return id;
     }
@@ -23,71 +18,43 @@ public class VisitTO {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getDescription() {
+        return description;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getLastName() {
-        return lastName;
+    public LocalDateTime getTime() {
+        return time;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setTime(LocalDateTime time) {
+        this.time = time;
     }
 
-    public String getTelephoneNumber() {
-        return telephoneNumber;
+    public DoctorTO getDoctor() {
+        return doctor;
     }
 
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
+    public void setDoctor(DoctorTO doctor) {
+        this.doctor = doctor;
     }
 
-    public String getEmail() {
-        return email;
+    public PatientTO getPatient() {
+        return patient;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPatient(PatientTO patient) {
+        this.patient = patient;
     }
 
-    public String getPatientNumber() {
-        return patientNumber;
+    public Collection<MedicalTreatmentTO> getMedicalTreatments() {
+        return medicalTreatments;
     }
 
-    public void setPatientNumber(String patientNumber) {
-        this.patientNumber = patientNumber;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public boolean getIsSmoker() {return isSmoker; }
-
-    public void setIsSmoker(boolean isSmoker) {this.isSmoker = isSmoker; };
-
-    public AddressTO getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressTO address) {
-        this.address = address;
-    }
-
-    public Collection<VisitTO> getVisits() {
-        return visits;
-    }
-
-    public void setVisits(Collection<VisitTO> visits) {
-        this.visits = visits;
+    public void setMedicalTreatments(Collection<MedicalTreatmentTO> medicalTreatments) {
+        this.medicalTreatments = medicalTreatments;
     }
 }
