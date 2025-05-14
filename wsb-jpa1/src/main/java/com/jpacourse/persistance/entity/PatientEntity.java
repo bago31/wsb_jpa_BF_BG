@@ -37,7 +37,7 @@ public class PatientEntity {
 	@OneToOne
 	private AddressEntity address;
 
-	@OneToMany(mappedBy = "patient", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "patient", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Collection<VisitEntity> visits =  new ArrayList<>();
 
 	public Long getId() {
