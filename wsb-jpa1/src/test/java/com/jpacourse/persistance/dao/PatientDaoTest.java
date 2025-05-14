@@ -33,7 +33,7 @@ public class PatientDaoTest {
 
     @Transactional
     @Test
-    public void testShouldSaveAndGetPatientWithNewProperty() {
+    public void testAddVisitToPatient() {
         // given
         AddressEntity addressEntity = new AddressEntity();
         addressEntity.setCity("Sieradz");
