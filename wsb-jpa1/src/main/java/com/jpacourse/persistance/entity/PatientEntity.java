@@ -1,6 +1,7 @@
 package com.jpacourse.persistance.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import jakarta.persistence.*;
@@ -37,7 +38,7 @@ public class PatientEntity {
 	private AddressEntity address;
 
 	@OneToMany(mappedBy = "patient", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-	private Collection<VisitEntity> visits;
+	private Collection<VisitEntity> visits =  new ArrayList<>();
 
 	public Long getId() {
 		return id;
