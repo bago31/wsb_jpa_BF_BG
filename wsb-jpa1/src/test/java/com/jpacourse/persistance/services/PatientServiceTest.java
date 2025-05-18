@@ -1,6 +1,7 @@
 package com.jpacourse.persistance.services;
 
 import com.jpacourse.dto.PatientTO;
+import com.jpacourse.dto.SimpleVisitTO;
 import com.jpacourse.dto.VisitTO;
 import com.jpacourse.persistance.dao.*;
 import com.jpacourse.persistance.entity.*;
@@ -104,55 +105,19 @@ public class PatientServiceTest
     @Test
     public void testShouldSaveAndGetPatientWithNewProperty() {
         // given
-        AddressEntity addressEntity = new AddressEntity();
-        addressEntity.setCity("Sieradz");
-        addressEntity.setAddressLine1("Harcerska");
-        addressEntity.setPostalCode("98-200");
-
-        final AddressEntity address = addressDao.save(addressEntity);
-
-        DoctorEntity doctorEntity = new DoctorEntity();
-        doctorEntity.setFirstName("Kuba");
-        doctorEntity.setLastName("Piwowar");
-        doctorEntity.setTelephoneNumber("123456789");
-        doctorEntity.setEmail("test@mail.com");
-        doctorEntity.setDoctorNumber("D-1");
-        doctorEntity.setAddress(address);
-        doctorEntity.setSpecialization(Specialization.OCULIST);
-
-        final DoctorEntity doctor = doctorDao.save(doctorEntity);
 
         PatientEntity patientEntity = new PatientEntity();
-        patientEntity.setAddress(address);
         patientEntity.setEmail("testwy@mail.com");
         patientEntity.setPatientNumber("t-12");
         patientEntity.setFirstName("Jan");
         patientEntity.setLastName("Kowalski");
         patientEntity.setIsSmoker(true);
-        patientEntity.setTelephoneNumber("123456789");
         patientEntity.setDateOfBirth(LocalDate.of(1990, 5, 15));
+        patientEntity.setTelephoneNumber("123456789");
 
         PatientEntity savedPatient = patientDao.save(patientEntity);
-
-        MedicalTreatmentEntity medicalTreatmentEntity = new MedicalTreatmentEntity();
-        medicalTreatmentEntity.setDescription("Testowy opis");
-        medicalTreatmentEntity.setType(TreatmentType.USG);
-
-        VisitEntity visitEntity = new VisitEntity();
-        visitEntity.setTime(LocalDateTime.now());
-        visitEntity.setDoctor(doctor);
-        visitEntity.setPatient(savedPatient);
-
-        VisitEntity savedVisit = visitDao.save(visitEntity);
-
-        savedPatient.getVisits().add(savedVisit);
-
-        patientDao.save(savedPatient);
-
-        medicalTreatmentEntity.setVisit(savedVisit);
-        MedicalTreatmentEntity medicalTreatment = medicalTreatmentDao.save(medicalTreatmentEntity);
         // when
-       final PatientTO patient = patientService.findById(patientEntity.getId());
+       final PatientTO patient = patientService.findById(savedPatient.getId());
         // then
 //        assertThat(patient.getIsSmoker()).isEqualTo(true);
         assertThat(patient).isNotNull();
@@ -217,9 +182,9 @@ public class PatientServiceTest
         medicalTreatmentEntity.setVisit(savedVisit1);
         MedicalTreatmentEntity medicalTreatment = medicalTreatmentDao.save(medicalTreatmentEntity);
 
-        List<VisitTO> result =  patientService.findVisitsByPatientId(patientEntity.getId());
+        List<SimpleVisitTO> result =  patientService.findVisitsByPatientId(patientEntity.getId());
 
-        assertThat(result).hasSize(1);
+        assertThat(result).hasSize(2);
 
     }
 }

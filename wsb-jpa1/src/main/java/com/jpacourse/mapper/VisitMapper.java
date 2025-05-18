@@ -1,9 +1,6 @@
 package com.jpacourse.mapper;
 
-import com.jpacourse.dto.AddressTO;
-import com.jpacourse.dto.MedicalTreatmentTO;
-import com.jpacourse.dto.PatientTO;
-import com.jpacourse.dto.VisitTO;
+import com.jpacourse.dto.*;
 import com.jpacourse.persistance.entity.AddressEntity;
 import com.jpacourse.persistance.entity.MedicalTreatmentEntity;
 import com.jpacourse.persistance.entity.VisitEntity;
@@ -31,6 +28,27 @@ public final class VisitMapper
         visitTO.setTime(visitEntity.getTime());
         visitTO.setDoctor(DoctorMapper.mapToTO(visitEntity.getDoctor()));
         visitTO.setPatient(PatientMapper.mapToTO(visitEntity.getPatient()));
+        visitTO.setMedicalTreatments(medicalTreatmentTOs);
+        return visitTO;
+    }
+
+    public static SimpleVisitTO mapToSimpleTo(final VisitEntity visitEntity) {
+        if (visitEntity == null)
+        {
+            return null;
+        }
+
+        List<MedicalTreatmentTO> medicalTreatmentTOs = visitEntity.getMedicalTreatments()
+                .stream()
+                .map(MedicalTreatmentMapper::mapToTO)
+                .toList();
+
+        final SimpleVisitTO visitTO = new SimpleVisitTO();
+        visitTO.setId(visitEntity.getId());
+        visitTO.setDescription(visitEntity.getDescription());
+        visitTO.setTime(visitEntity.getTime());
+        visitTO.setDoctor(visitEntity.getDoctor().getId());
+        visitTO.setPatient(visitEntity.getPatient().getId());
         visitTO.setMedicalTreatments(medicalTreatmentTOs);
         return visitTO;
     }

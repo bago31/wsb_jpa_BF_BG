@@ -1,6 +1,7 @@
 package com.jpacourse.service.impl;
 
 import com.jpacourse.dto.PatientTO;
+import com.jpacourse.dto.SimpleVisitTO;
 import com.jpacourse.dto.VisitTO;
 import com.jpacourse.mapper.PatientMapper;
 import com.jpacourse.mapper.VisitMapper;
@@ -38,10 +39,10 @@ public class PatientServiceImpl implements PatientService
     }
 
     @Override
-    public List<VisitTO> findVisitsByPatientId(Long patientId) {
+    public List<SimpleVisitTO> findVisitsByPatientId(Long patientId) {
         PatientEntity patient = patientDao.findOne(patientId);
         return patient.getVisits().stream()
-                .map(VisitMapper::mapToTO)
+                .map(VisitMapper::mapToSimpleTo)
                 .toList();
     }
 }
