@@ -7,6 +7,7 @@ import com.jpacourse.persistance.entity.VisitEntity;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public class PatientDaoImpl extends AbstractDao<PatientEntity, Long> implements PatientDao
@@ -27,4 +28,26 @@ public class PatientDaoImpl extends AbstractDao<PatientEntity, Long> implements 
 
         entityManager.merge(patient);
     }
+
+    @Override
+    public List<PatientEntity> findPatientByLastName(String lastName) {
+        return entityManager.createQuery(
+                        "SELECT p FROM PatientEntity p WHERE p.lastName = :lastName", PatientEntity.class)
+                .setParameter("lastName", lastName)
+                .getResultList();
+    }
+
+    @Override
+    public List<PatientEntity> findPatientsWithMoreThanXVisits(long x) {
+        return entityManager.createQuery(
+                        "SELECT p FROM PatientEntity p WHERE SIZE(p.visits) > :x", PatientEntity.class)
+                .setParameter("x", x)
+                .getResultList();
 }
+    @Override
+    public List<PatientEntity> findBySmokingStatus(boolean isSmoker) {
+        String jpql = "SELECT p FROM PatientEntity p WHERE p.isSmoker = :isSmoker";
+        return entityManager.createQuery(jpql, PatientEntity.class)
+                .setParameter("isSmoker", isSmoker)
+                .getResultList();
+}}
