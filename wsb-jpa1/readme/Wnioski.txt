@@ -1,0 +1,5 @@
+Wnioski po po zmienie FetchType z Select na Join:
+
+1. @Fetch(FetchMode.SELECT) - Hibernate wykonuje jedno zapytanie  główne + osobne zapytania do kolekcji
+2. @Fetch(FetchMode.JOIN) - Hibernate wykonuje jedno zapytanie z JOINem
+Porównanie zapytań w screenach W folderze read me

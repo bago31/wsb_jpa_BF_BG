@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "PATIENT")
@@ -13,6 +15,9 @@ public class PatientEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Version
+	private Long version;
 
 	@Column(nullable = false)
 	private String firstName;
@@ -37,7 +42,8 @@ public class PatientEntity {
 	@OneToOne
 	private AddressEntity address;
 
-	@OneToMany(mappedBy = "patient", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "patient", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(FetchMode.JOIN)
 	private Collection<VisitEntity> visits =  new ArrayList<>();
 
 	public Long getId() {

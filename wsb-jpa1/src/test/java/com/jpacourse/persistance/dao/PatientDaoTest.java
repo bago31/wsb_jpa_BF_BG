@@ -4,16 +4,24 @@ import com.jpacourse.dto.PatientTO;
 import com.jpacourse.persistance.entity.*;
 import com.jpacourse.persistance.enums.Specialization;
 import com.jpacourse.persistance.enums.TreatmentType;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.OptimisticLockException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class PatientDaoTest {
@@ -31,6 +39,9 @@ public class PatientDaoTest {
 
     @Autowired
     private AddressDao addressDao;
+
+    @Autowired
+    private PlatformTransactionManager transactionManager;
 
     @Transactional
     @Test
@@ -172,7 +183,7 @@ public class PatientDaoTest {
 
         // when
         List<PatientEntity> result = patientDao.findPatientsWithMoreThanXVisits(2);
-
+        Collection<VisitEntity> visits = patient.getVisits();
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.stream()
@@ -243,5 +254,41 @@ public class PatientDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).allMatch(PatientEntity::getIsSmoker);
+    }
+
+    @Test
+    void shouldThrowOptimisticLockExceptionWhenConcurrentModification() {
+        TransactionTemplate tx = new TransactionTemplate(transactionManager);
+
+        PatientEntity saved = tx.execute(status -> {
+            PatientEntity patient = new PatientEntity();
+            patient.setEmail("test@mail.com");
+            patient.setPatientNumber("P-001");
+            patient.setFirstName("Jan");
+            patient.setLastName("Kowalski");
+            patient.setIsSmoker(false);
+            patient.setTelephoneNumber("123456789");
+            patient.setDateOfBirth(LocalDate.of(1990, 5, 15));
+            return patientDao.save(patient);
+        });
+
+        PatientEntity p1 = tx.execute(status -> patientDao.findOne(saved.getId()));
+        PatientEntity p2 = tx.execute(status -> patientDao.findOne(saved.getId()));
+
+        p1.setFirstName("Janek");
+        tx.execute(status -> {
+            patientDao.update(p1);
+            return null;
+        });
+
+
+        p2.setFirstName("Jasiek");
+
+        assertThrows(ObjectOptimisticLockingFailureException.class, () -> {
+            tx.execute(status -> {
+                patientDao.update(p2); // <- konflikt wersji
+                return null;
+            });
+        });
     }
 }
